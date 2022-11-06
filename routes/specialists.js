@@ -1,0 +1,113 @@
+const express = require("express");
+const Department = require("../models/Department");
+const router = express.Router({ mergeParams: true });
+const Specialist = require('../models/Specialist');
+
+router.get('/', async (req, res) => {
+    try{
+
+        const temp1 = await Department.find( {institutionID: req.params.institutionID });
+
+        if(temp1.length == 0){
+            res.json({ message: "Invalid Institution ID" });
+            return;
+        }
+
+        const temp2 = temp1.at(0).id;
+
+        if(temp2 != req.params.departmentID){
+            res.json({ message: "Wrong Institution ID" });
+            return;
+        }
+
+        const Specialists = await Specialist.find({ departmentID: req.params.departmentID });
+
+        res.json(Specialists);
+    } catch(e){
+        res.status(500).json({ message: e.message });
+    }
+})
+
+router.get('/:id', getSpecialist, (req, res) => {
+    res.json(res.specialist);
+})
+
+router.post('/', async (req, res) => {
+    const specialist = new Specialist({
+        name: req.body.name,
+        surname: req.body.surname,
+        age: req.body.age,
+        departmentID: req.params.departmentID
+    });
+
+    try{
+        const newSpecialist = await specialist.save();
+        res.status(201).json(newSpecialist);
+    } catch(e){
+        res.status(400).json({ message: e.message });
+    }
+})
+
+router.patch('/:id', getSpecialist, async (req, res) => {
+    if(req.body.name != null){
+        res.specialist.name = req.body.name;
+    }
+
+    if(req.body.surname != null){
+        res.specialist.surname = req.body.surname;
+    }
+
+    if(req.body.age != null){
+        res.specialist.age = req.body.age;
+    }
+
+    try{
+        const updatedSpecialist = await res.specialist.save();
+        res.json(updatedSpecialist);
+    } catch(e){
+        res.status(400).json({ message: e.message });
+    }
+})
+
+router.delete('/:id', getSpecialist, async (req, res) => {
+    try{
+        await res.specialist.remove();
+        res.json({ message: "Specialist deleted" })
+    } catch(e){
+        res.status(500).json({ message: e.message });
+    }
+})
+
+async function getSpecialist(req, res, next){
+    
+    let specialist;
+
+    try{
+
+        const temp1 = await Department.find( {institutionID: req.params.institutionID });
+
+        if(temp1.length == 0){
+            res.json({ message: "Cannot find specialist" });
+            return;
+        }
+
+        const temp2 = temp1.at(0).id;
+
+        if(temp2 != req.params.departmentID){
+            res.json({ message: "Cannot find specialist" });
+            return;
+        }
+
+        specialist = await Specialist.findById(req.params.id);
+        if(specialist == null){
+            return res.status(404).json({ message: 'Cannot find specialist'});
+        }
+    } catch(e){
+        res.status(500).json({ message: e.message });
+    }
+
+    res.specialist = specialist;
+    next();
+}
+
+module.exports = router;
