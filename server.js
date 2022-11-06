@@ -16,17 +16,10 @@ mongoose.connect(
 
 app.use(express.json());
 
-const institutionRouter = require('./routes/institutions');
-app.use('/institutions', institutionRouter);
+app.get('/', async (req, res) => {
+    res.send("Help");
+})
 
-const departmentRouter = require('./routes/departments');
-app.use('/institutions/:institutionID/departments', departmentRouter);
-
-const specialistRouter = require('./routes/specialists');
-app.use('/institutions/:institutionID/departments/:departmentID/specialists', specialistRouter);
-
-const userRouter = require('./routes/users');
-app.use('/users', userRouter);
 
 app.get('/departments', async (req, res) => {
     try{
