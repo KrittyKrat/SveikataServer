@@ -20,6 +20,9 @@ app.get('/', async (req, res) => {
     res.send("Help");
 })
 
+const institutionRouter = require('./routes/institutions');
+app.use('/institutions', institutionRouter);
+
 
 app.get('/departments', async (req, res) => {
     try{
