@@ -23,6 +23,11 @@ app.get('/', async (req, res) => {
 const institutionRouter = require('./routes/institutions');
 app.use('/institutions', institutionRouter);
 
+const departmentRouter = require('./routes/departments');
+app.use('/institutions/:institutionID/departments', departmentRouter);
+
+const specialistRouter = require('./routes/specialists');
+app.use('/institutions/:institutionID/departments/:departmentID/specialists', specialistRouter);
 
 app.get('/departments', async (req, res) => {
     try{
