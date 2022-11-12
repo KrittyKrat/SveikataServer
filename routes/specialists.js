@@ -2,6 +2,7 @@ const express = require("express");
 const Department = require("../models/Department");
 const router = express.Router({ mergeParams: true });
 const Specialist = require('../models/Specialist');
+const authorization = require("../middle/auth");
 
 router.get('/', authorization.authenticateTokenUser, async (req, res) => {
     try{

@@ -1,17 +1,19 @@
 const mongoose = require('mongoose');
 
 const VisitSchema = mongoose.Schema({
-    name: {
+    description: {
         type: String,
         required: true
     },
     userID: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        index: true
     },
     specialistID: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Specialist",
+        index: true
     },
 })
 

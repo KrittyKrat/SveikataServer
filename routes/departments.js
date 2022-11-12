@@ -14,7 +14,7 @@ router.get('/', authorization.authenticateTokenAdmin, async (req, res) => {
     }
 })
 
-router.get('/:id', authorization.authenticateTokenAdmin, getDepartment, (req, res) => {
+router.get('/:id', authorization.authenticateTokenUser, getDepartment, (req, res) => {
     res.json(res.department);
 })
 

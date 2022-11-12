@@ -4,7 +4,7 @@ const router = express.Router();
 const Institution = require('../models/Institution');
 const authorization = require("../middle/auth");
 
-router.get('/', authorization.authenticateTokenUser, async (req, res) => {
+router.get('/', authorization.authenticateTokenGeneral, async (req, res) => {
     try{
         const institutions = await Institution.find();
         res.json(institutions);
@@ -13,7 +13,7 @@ router.get('/', authorization.authenticateTokenUser, async (req, res) => {
     }
 })
 
-router.get('/:id', authorization.authenticateTokenAdmin, getInstitution, (req, res) => {
+router.get('/:id', authorization.authenticateTokenGeneral, getInstitution, (req, res) => {
     res.json(res.institution);
 })
 

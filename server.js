@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const Institution = require('./models/Institution')
 const Department = require("./models/Department");
 const Specialist = require("./models/Specialist");
+const Visit = require('./models/Visit');
 const authorization = require("./middle/auth");
 const jwt = require('jsonwebtoken')
 require('dotenv/config')
@@ -20,8 +21,11 @@ app.get('/', async (req, res) => {
     res.send("Help");
 })
 
+const userRouter = require('./routes/users');
+app.use('/users', userRouter);
+
 const visitRouter = require('./routes/visits');
-app.use('/visits', visitRouter);
+app.use('/users/:userID/visits', visitRouter);
 
 const institutionRouter = require('./routes/institutions');
 app.use('/institutions', institutionRouter);
@@ -32,8 +36,14 @@ app.use('/institutions/:institutionID/departments', departmentRouter);
 const specialistRouter = require('./routes/specialists');
 app.use('/institutions/:institutionID/departments/:departmentID/specialists', specialistRouter);
 
-const userRouter = require('./routes/users');
-app.use('/users', userRouter);
+app.get('/visits', authorization.authenticateTokenAdmin, async (req, res) => {
+    try{
+        const visit = await Visit.find();
+        res.json(visit);
+    } catch(e){
+        res.status(500).json({ message: e.message });
+    }
+})
 
 app.get('/departments', authorization.authenticateTokenUser, async (req, res) => {
     try{

@@ -99,7 +99,7 @@ router.post('/token', async (req, res) => {
 })
 
 function generateAccessToken(user){
-    return jwt.sign({ username: user.username, role: user.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m'});
+    return jwt.sign({ username: user.username, role: user.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
 }
 
 function generateRefreshToken(user){
