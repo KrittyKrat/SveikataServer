@@ -13,7 +13,7 @@ router.get('/', authorization.authenticateTokenUser, async (req, res) => {
     }
 })
 
-router.get('/:id', getInstitution, (req, res) => {
+router.get('/:id', authorization.authenticateTokenAdmin, getInstitution, (req, res) => {
     res.json(res.institution);
 })
 
@@ -31,7 +31,7 @@ router.post('/', authorization.authenticateTokenAdmin, async (req, res) => {
     }
 })
 
-router.put('/:id', getInstitution, async (req, res) => {
+router.put('/:id', authorization.authenticateTokenAdmin, getInstitution, async (req, res) => {
 
     if(req.body.name != null && req.body.adress != null){
         res.institution.name = req.body.name;
@@ -46,7 +46,7 @@ router.put('/:id', getInstitution, async (req, res) => {
     }
 })
 
-router.delete('/:id', getInstitution, async (req, res) => {
+router.delete('/:id', authorization.authenticateTokenAdmin, getInstitution, async (req, res) => {
 
     const departments = await Department.find({ institutionID: req.params.id });
 

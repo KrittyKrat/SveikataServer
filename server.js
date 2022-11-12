@@ -20,6 +20,9 @@ app.get('/', async (req, res) => {
     res.send("Help");
 })
 
+const visitRouter = require('./routes/visits');
+app.use('/visits', visitRouter);
+
 const institutionRouter = require('./routes/institutions');
 app.use('/institutions', institutionRouter);
 
@@ -32,7 +35,7 @@ app.use('/institutions/:institutionID/departments/:departmentID/specialists', sp
 const userRouter = require('./routes/users');
 app.use('/users', userRouter);
 
-app.get('/departments', async (req, res) => {
+app.get('/departments', authorization.authenticateTokenUser, async (req, res) => {
     try{
         const departments = await Department.find();
         res.json(departments);
@@ -41,7 +44,7 @@ app.get('/departments', async (req, res) => {
     }
 })
 
-app.get('/specialists', async (req, res) => {
+app.get('/specialists', authorization.authenticateTokenUser, async (req, res) => {
     try{
         const specialists = await Specialist.find();
         res.json(specialists);

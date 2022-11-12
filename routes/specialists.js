@@ -3,7 +3,7 @@ const Department = require("../models/Department");
 const router = express.Router({ mergeParams: true });
 const Specialist = require('../models/Specialist');
 
-router.get('/', async (req, res) => {
+router.get('/', authorization.authenticateTokenUser, async (req, res) => {
     try{
 
         const temp1 = await Department.find( {institutionID: req.params.institutionID });
@@ -28,11 +28,11 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id', getSpecialist, (req, res) => {
+router.get('/:id', authorization.authenticateTokenAdmin, getSpecialist, (req, res) => {
     res.json(res.specialist);
 })
 
-router.post('/', async (req, res) => {
+router.post('/', authorization.authenticateTokenAdmin, async (req, res) => {
     const specialist = new Specialist({
         name: req.body.name,
         surname: req.body.surname,
@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.patch('/:id', getSpecialist, async (req, res) => {
+router.patch('/:id', authorization.authenticateTokenAdmin, getSpecialist, async (req, res) => {
     if(req.body.name != null){
         res.specialist.name = req.body.name;
     }
@@ -69,7 +69,7 @@ router.patch('/:id', getSpecialist, async (req, res) => {
     }
 })
 
-router.delete('/:id', getSpecialist, async (req, res) => {
+router.delete('/:id', authorization.authenticateTokenAdmin, getSpecialist, async (req, res) => {
     try{
         await res.specialist.remove();
         res.json({ message: "Specialist deleted" })

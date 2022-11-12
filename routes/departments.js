@@ -5,7 +5,7 @@ const Institution = require("../models/Institution");
 const Specialist = require("../models/Specialist");
 const authorization = require("../middle/auth");
 
-router.get('/', async (req, res) => {
+router.get('/', authorization.authenticateTokenAdmin, async (req, res) => {
     try{
         const departments = await Department.find({ institutionID: req.params.institutionID });
         res.json(departments);
@@ -14,11 +14,11 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/:id', getDepartment, (req, res) => {
+router.get('/:id', authorization.authenticateTokenAdmin, getDepartment, (req, res) => {
     res.json(res.department);
 })
 
-router.post('/', async (req, res) => {
+router.post('/', authorization.authenticateTokenAdmin, async (req, res) => {
     const department = new Department({
         name: req.body.name,
         description: req.body.description,
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-router.put('/:id', getDepartment, async (req, res) => {
+router.put('/:id', authorization.authenticateTokenAdmin, getDepartment, async (req, res) => {
 
     if(req.body.name != null && req.body.description != null){
         res.department.name = req.body.name;
@@ -48,7 +48,7 @@ router.put('/:id', getDepartment, async (req, res) => {
     }
 })
 
-router.delete('/:id', getDepartment, async (req, res) => {
+router.delete('/:id', authorization.authenticateTokenAdmin, getDepartment, async (req, res) => {
 
     const specialists = await Specialist.find({ departmentID: req.params.id });
 
