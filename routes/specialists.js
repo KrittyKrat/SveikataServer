@@ -4,7 +4,7 @@ const router = express.Router({ mergeParams: true });
 const Specialist = require('../models/Specialist');
 const authorization = require("../middle/auth");
 
-router.get('/', authorization.authenticateTokenUser, async (req, res) => {
+router.get('/', authorization.authenticateTokenGeneral, async (req, res) => {
     try{
 
         const temp1 = await Department.find( {institutionID: req.params.institutionID });
@@ -29,7 +29,7 @@ router.get('/', authorization.authenticateTokenUser, async (req, res) => {
     }
 })
 
-router.get('/:id', authorization.authenticateTokenAdmin, getSpecialist, (req, res) => {
+router.get('/:id', authorization.authenticateTokenGeneral, getSpecialist, (req, res) => {
     res.json(res.specialist);
 })
 

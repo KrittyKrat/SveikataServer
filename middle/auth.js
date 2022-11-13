@@ -20,6 +20,7 @@ async function authenticateTokenUser (req, res, next) {
     const token = authHeader && authHeader.split(' ')[1];
     if (token == null) return res.sendStatus(401);
 
+    console.log(req.params.userID)
     const currentUser = await User.findById(req.params.userID);;
     if (currentUser == null) return res.sendStatus(401);
 
@@ -41,8 +42,9 @@ function authenticateTokenAdmin (req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     if (token == null) return res.sendStatus(401);
-  
+    
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (e, user) => {
+        console.log(user.role);
         if (e || user.role != "Admin") return res.sendStatus(403);
         req.user = user;
         next();

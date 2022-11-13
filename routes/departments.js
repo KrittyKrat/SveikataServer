@@ -5,7 +5,7 @@ const Institution = require("../models/Institution");
 const Specialist = require("../models/Specialist");
 const authorization = require("../middle/auth");
 
-router.get('/', authorization.authenticateTokenAdmin, async (req, res) => {
+router.get('/', authorization.authenticateTokenGeneral, async (req, res) => {
     try{
         const departments = await Department.find({ institutionID: req.params.institutionID });
         res.json(departments);
@@ -14,7 +14,7 @@ router.get('/', authorization.authenticateTokenAdmin, async (req, res) => {
     }
 })
 
-router.get('/:id', authorization.authenticateTokenUser, getDepartment, (req, res) => {
+router.get('/:id', authorization.authenticateTokenGeneral, getDepartment, (req, res) => {
     res.json(res.department);
 })
 

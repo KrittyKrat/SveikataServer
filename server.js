@@ -45,7 +45,7 @@ app.get('/visits', authorization.authenticateTokenAdmin, async (req, res) => {
     }
 })
 
-app.get('/departments', authorization.authenticateTokenUser, async (req, res) => {
+app.get('/departments', authorization.authenticateTokenGeneral, async (req, res) => {
     try{
         const departments = await Department.find();
         res.json(departments);
@@ -54,7 +54,7 @@ app.get('/departments', authorization.authenticateTokenUser, async (req, res) =>
     }
 })
 
-app.get('/specialists', authorization.authenticateTokenUser, async (req, res) => {
+app.get('/specialists', authorization.authenticateTokenGeneral, async (req, res) => {
     try{
         const specialists = await Specialist.find();
         res.json(specialists);
