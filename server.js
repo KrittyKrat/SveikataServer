@@ -8,6 +8,7 @@ const Specialist = require("./models/Specialist");
 const Visit = require('./models/Visit');
 const authorization = require("./middle/auth");
 const jwt = require('jsonwebtoken')
+const cors = require("cors");
 require('dotenv/config')
 
 mongoose.connect(
@@ -16,27 +17,31 @@ mongoose.connect(
 );
 
 app.use(express.json());
+app.use(cors());
 
-app.get('/', async (req, res) => {
+app.get('/api', async (req, res) => {
     res.send("Help");
 })
 
 const userRouter = require('./routes/users');
-app.use('/users', userRouter);
+app.use('/api/users', userRouter);
+
+const tokenRouter = require('./routes/tokens');
+app.use('/api/tokens', tokenRouter);
 
 const visitRouter = require('./routes/visits');
-app.use('/users/:userID/visits', visitRouter);
+app.use('/api/users/:userID/visits', visitRouter);
 
 const institutionRouter = require('./routes/institutions');
-app.use('/institutions', institutionRouter);
+app.use('/api/institutions', institutionRouter);
 
 const departmentRouter = require('./routes/departments');
-app.use('/institutions/:institutionID/departments', departmentRouter);
+app.use('/api/institutions/:institutionID/departments', departmentRouter);
 
 const specialistRouter = require('./routes/specialists');
-app.use('/institutions/:institutionID/departments/:departmentID/specialists', specialistRouter);
+app.use('/api/institutions/:institutionID/departments/:departmentID/specialists', specialistRouter);
 
-app.get('/visits', authorization.authenticateTokenAdmin, async (req, res) => {
+app.get('/api/visits', authorization.authenticateTokenAdmin, async (req, res) => {
     try{
         const visit = await Visit.find();
         res.json(visit);
@@ -45,7 +50,7 @@ app.get('/visits', authorization.authenticateTokenAdmin, async (req, res) => {
     }
 })
 
-app.get('/departments', authorization.authenticateTokenGeneral, async (req, res) => {
+app.get('/api/departments', authorization.authenticateTokenGeneral, async (req, res) => {
     try{
         const departments = await Department.find();
         res.json(departments);
@@ -54,7 +59,7 @@ app.get('/departments', authorization.authenticateTokenGeneral, async (req, res)
     }
 })
 
-app.get('/specialists', authorization.authenticateTokenGeneral, async (req, res) => {
+app.get('/api/specialists', authorization.authenticateTokenGeneral, async (req, res) => {
     try{
         const specialists = await Specialist.find();
         res.json(specialists);

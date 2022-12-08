@@ -44,7 +44,6 @@ function authenticateTokenAdmin (req, res, next) {
     if (token == null) return res.sendStatus(401);
     
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (e, user) => {
-        console.log(user.role);
         if (e || user.role != "Admin") return res.sendStatus(403);
         req.user = user;
         next();
