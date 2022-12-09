@@ -117,11 +117,6 @@ async function getSpecialist(req, res, next){
             return;
         }
 
-        if(!found){
-            res.json({ message: "Cannot find specialist" });
-            return;
-        }
-
         specialist = await Specialist.findById(req.params.id);
         if(specialist == null){
             return res.status(404).json({ message: 'Cannot find specialist'});
