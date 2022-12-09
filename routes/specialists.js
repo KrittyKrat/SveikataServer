@@ -14,10 +14,19 @@ router.get('/', authorization.authenticateTokenGeneral, async (req, res) => {
             return;
         }
 
-        const temp2 = temp1.at(0).id;
+        let found = false;
+        
+        for(let i = 0; i < temp1.length; i++)
+        {
+            if(temp1.at(i).id == req.params.departmentID)
+            {
+                found = true;
+                break;
+            }
+        }
 
-        if(temp2 != req.params.departmentID){
-            res.json({ message: "Wrong Institution ID" });
+        if(!found){
+            res.json({ message: "Wrong Department ID" });
             return;
         }
 
