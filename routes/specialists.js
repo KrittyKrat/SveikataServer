@@ -101,9 +101,23 @@ async function getSpecialist(req, res, next){
             return;
         }
 
-        const temp2 = temp1.at(0).id;
+        let found = false;
+        
+        for(let i = 0; i < temp1.length; i++)
+        {
+            if(temp1.at(i).id == req.params.departmentID)
+            {
+                found = true;
+                break;
+            }
+        }
 
-        if(temp2 != req.params.departmentID){
+        if(!found){
+            res.json({ message: "Wrong Department ID" });
+            return;
+        }
+
+        if(!found){
             res.json({ message: "Cannot find specialist" });
             return;
         }
