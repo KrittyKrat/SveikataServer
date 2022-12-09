@@ -56,7 +56,7 @@ router.delete('/:id', authorization.authenticateTokenAdmin, getInstitution, asyn
     }
 
     try{
-        //await res.institution.remove();
+        await res.institution.remove();
         res.json({ message: "Institution deleted" })
     } catch(e){
         res.status(500).json({ message: e.message });
