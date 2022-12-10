@@ -8,6 +8,16 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const authorization = require("../middle/auth");
 
+router.get('/:id', authorization.authenticateTokenAdmin, async (req, res) => {
+
+    try{
+        const user = await User.findById(req.params.id);
+        res.json(user);
+    } catch(e){
+        res.status(500).json({ message: e.message });
+    }
+})
+
 router.get('/', authorization.authenticateTokenAdmin, async (req, res) => {
 
     try{
