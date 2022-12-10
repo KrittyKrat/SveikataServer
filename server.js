@@ -68,6 +68,15 @@ app.get('/api/specialists', authorization.authenticateTokenGeneral, async (req, 
     }
 })
 
+app.get('/api/specialists/:id', authorization.authenticateTokenGeneral, async (req, res) => {
+    try{
+        const specialists = await Specialist.findById(req.params.id);
+        res.json(specialists);
+    } catch(e){
+        res.status(500).json({ message: e.message });
+    }
+})
+
 app.listen(process.env.PORT || PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
