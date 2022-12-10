@@ -20,14 +20,13 @@ async function authenticateTokenUser (req, res, next) {
     const token = authHeader && authHeader.split(' ')[1];
     if (token == null) return res.sendStatus(401);
 
-    console.log(req.params.userID)
     const currentUser = await User.findById(req.params.userID);;
     if (currentUser == null) return res.sendStatus(401);
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (e, user) => {
         if(e) return res.sendStatus(403);
         
-        if(user.role == "Admin" || currentUser.username != user.username){
+        if(user.role == "Admin" || currentUser.username == user.username){
             req.user = user;
             next()
         }

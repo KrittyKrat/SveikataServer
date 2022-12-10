@@ -5,7 +5,7 @@ const authorization = require("../middle/auth");
 
 router.get('/', authorization.authenticateTokenUser, async (req, res) => {
     try{
-        const visit = await Visit.find();
+        const visit = await Visit.find( { userID: req.params.userID });
         res.json(visit);
     } catch(e){
         res.status(500).json({ message: e.message });
@@ -62,7 +62,7 @@ async function getVisit(req, res, next){
 
     try{
         visit = await Visit.findById(req.params.id);
-        if(visit == null){
+        if(visit == null || visit.userID != req.params.userID){
             return res.status(404).json({ message: 'Cannot find visit'});
         }
     } catch(e){
