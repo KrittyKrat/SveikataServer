@@ -33,7 +33,7 @@ router.post('/login', async (req, res) => {
     //const refreshTokenDB = new RefreshToken({
     //    refreshToken: refreshToken,
     //});
-    await refreshTokenDB.save();
+    //await refreshTokenDB.save();
 
     return res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken })
 })
