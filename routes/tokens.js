@@ -30,9 +30,9 @@ router.post('/login', async (req, res) => {
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
 
-    const refreshTokenDB = new RefreshToken({
-        refreshToken: refreshToken,
-    });
+    //const refreshTokenDB = new RefreshToken({
+    //    refreshToken: refreshToken,
+    //});
     await refreshTokenDB.save();
 
     return res.status(201).json({ accessToken: accessToken, refreshToken: refreshToken })
