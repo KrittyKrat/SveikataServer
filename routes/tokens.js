@@ -67,11 +67,11 @@ router.put('/token', async (req, res) => {
 })
 
 function generateAccessToken(user){
-    return jwt.sign({ username: user.username, role: user.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
+    return jwt.sign({ id: user._id, username: user.username, role: user.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m'});
 }
 
 function generateRefreshToken(user){
-    return refreshToken = jwt.sign({ username: user.username, role: user.role }, process.env.REFRESH_TOKEN_SECRET);
+    return refreshToken = jwt.sign({ id: user._id, username: user.username, role: user.role }, process.env.REFRESH_TOKEN_SECRET);
 }
 
 module.exports = router;
