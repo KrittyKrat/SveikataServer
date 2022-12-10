@@ -7,6 +7,9 @@ const RefreshToken = require('../models/RefreshToken');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const authorization = require("../middle/auth");
+const cors = require("cors");
+
+router.use(cors());
 
 router.get('/:id', authorization.authenticateTokenAdmin, async (req, res) => {
 
